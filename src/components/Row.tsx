@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRef } from 'react';
 import styled from 'styled-components';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 interface RowProps {
   title: string;
@@ -25,7 +26,7 @@ export default function Row({ title }: RowProps) {
 
   const handleScroll = (direction: 'left' | 'right') => {
     if (rowRef.current) {
-      const scrollAmount = direction === 'left' ? -500 : 500;
+      const scrollAmount = direction === 'left' ? -1000 : 1000;
       rowRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
@@ -36,7 +37,13 @@ export default function Row({ title }: RowProps) {
   return (
     <RowContainer>
       <RowTitle>{title}</RowTitle>
-      <button onClick={() => handleScroll('left')}>◀</button>
+      <ArrowButton
+        className="arrow-button"
+        onClick={() => handleScroll('left')}
+        direction="left"
+      >
+        <IoIosArrowBack size={30} />
+      </ArrowButton>
       <RowContent ref={rowRef}>
         {data?.data.map((movie) => (
           <RowItem key={movie.message_id}>
@@ -50,17 +57,29 @@ export default function Row({ title }: RowProps) {
           </RowItem>
         ))}
       </RowContent>
-      <button onClick={() => handleScroll('right')}>▶</button>
+      <ArrowButton
+        className="arrow-button"
+        onClick={() => handleScroll('right')}
+        direction="right"
+      >
+        <IoIosArrowForward size={30} />
+      </ArrowButton>
     </RowContainer>
   );
 }
 
 const RowContainer = styled.div`
-  /* margin: 2rem; */
+  position: relative;
+  margin: 2rem 0;
+  cursor: pointer;
+
+  &:hover .arrow-button {
+    opacity: 1;
+  }
 `;
 
 const RowTitle = styled.h2`
-  /* margin-bottom: 1rem; */
+  margin-bottom: 1rem;
 `;
 
 const RowContent = styled.div`
@@ -76,7 +95,41 @@ const RowContent = styled.div`
 `;
 
 const RowItem = styled.div`
-  min-width: 841px;
-  height: 480px;
+  min-width: 420px;
+  height: 240px;
   flex: 0 0 auto;
+`;
+
+const ArrowButton = styled.button<{ direction: 'left' | 'right' }>`
+  position: absolute;
+  bottom: 16px;
+  ${({ direction }) => direction}: 0;
+  height: 240px;
+  width: 50px;
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1;
+  transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+
+  svg {
+    transition: transform 0.4s ease-in-out;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:hover svg {
+    transform: scale(1.3);
+  }
+
+  &.arrow-button {
+    opacity: 0;
+  }
 `;

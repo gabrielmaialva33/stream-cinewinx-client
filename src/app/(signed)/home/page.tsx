@@ -9,6 +9,7 @@ const HomeContainer = styled.div`
   background-color: #000;
   color: #fff;
   min-height: 100vh;
+  padding: 60px;
 `;
 
 export default function Home() {
