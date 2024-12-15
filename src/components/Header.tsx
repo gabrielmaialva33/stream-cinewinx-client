@@ -8,7 +8,7 @@ const HeaderWrapper = styled.header`
     width: 100%;
     padding: 20px 40px;
     z-index: 10;
-    background: rgba(41, 19, 38, 0.9); // Fundo escuro translúcido
+    background: rgba(41, 19, 38, 0.9); // Dark translucent background
     color: #ffffff;
     display: flex;
     justify-content: space-between;
@@ -17,7 +17,7 @@ const HeaderWrapper = styled.header`
 
 const Title = styled.h1`
     font-size: 24px;
-    color: #da2ec4; // Rosa como destaque no título
+    color: #da2ec4; // Pink for the title highlight
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     cursor: pointer;
@@ -33,12 +33,12 @@ const NavMenu = styled.nav`
 
         li {
             font-size: 16px;
-            color: #ced1d9; // Cinza para os itens
+            color: #ced1d9; // Gray for menu items
             cursor: pointer;
             transition: opacity 0.2s;
 
             &:hover {
-                color: #64cc95; // Verde no hover
+                color: #64cc95; // Green on hover
             }
         }
     }
@@ -47,7 +47,7 @@ const NavMenu = styled.nav`
 export default function Header() {
     return (
         <HeaderWrapper>
-            <Title>CineWinx</Title>
+            <Title>𝐂𝐈𝐍𝐄𝐖𝐈𝐍𝐗™️</Title>
             <NavMenu>
                 <ul>
                     <li>Home</li>

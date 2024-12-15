@@ -14,21 +14,21 @@ async function fetchMovies(per_page: number, offset_id: number) {
 }
 
 
-// Container principal da linha
+// Main container of the row
 const RowContainer = styled.div`
     margin-top: 40px;
     position: relative;
 `;
 
-// Título da linha
+// Row title
 const RowTitle = styled.h2`
     font-size: 1.5rem;
     margin-bottom: 10px;
     font-family: 'Montserrat', sans-serif;
-    color: #64cc95; // Verde claro como destaque
+    color: #64cc95; // Light green for emphasis
 `;
 
-// Conteúdo do carrossel
+// Content of the carousel
 const RowContent = styled.div`
     display: flex;
     overflow-x: auto;
@@ -41,7 +41,7 @@ const RowContent = styled.div`
     }
 `;
 
-// Itens dentro do carrossel
+// Items inside the carousel
 const RowItem = styled.div`
     flex: 0 0 auto;
     width: 600px;
@@ -57,21 +57,21 @@ const RowItem = styled.div`
         object-fit: cover;
     }
 
-    // Borda com efeito sutil no hover
+    // Subtle hover effect border
 
     &:hover {
-        border: 3px solid #da2ec4; // Rosa como borda
+        border: 3px solid #da2ec4; // Pink as the border color
     }
 `;
 
-// Botões de navegação
+// Navigation buttons
 const ArrowButton = styled.button<{ direction: string }>`
     position: absolute;
     top: 50%;
     ${({direction}) => (direction === 'left' ? 'left: 0' : 'right: 0')};
     transform: translateY(-50%);
-    background-color: rgba(41, 19, 38, 0.6); // Fundo translúcido
-    color: #64cc95; // Verde claro
+    background-color: rgba(41, 19, 38, 0.6); // Translucent background
+    color: #64cc95; // Light green
     border: none;
     padding: 10px;
     cursor: pointer;
@@ -88,7 +88,7 @@ export default function Row({title}: { title: string }) {
     const rowRef = useRef<HTMLDivElement>(null);
 
     const {data, isLoading, error} = useQuery({
-        queryKey: ['movies', 10, 0], //  limit 10, offset 0
+        queryKey: ['movies', 10, 0], // limit 10, offset 0
         queryFn: () => fetchMovies(10, 0),
     });
 
@@ -109,12 +109,12 @@ export default function Row({title}: { title: string }) {
         <RowContainer>
             <RowTitle>{title}</RowTitle>
 
-            {/* Botão para mover para a esquerda */}
+            {/* Button to scroll left */}
             <ArrowButton direction="left" onClick={() => handleScroll('left')}>
                 <IoIosArrowBack size={20}/>
             </ArrowButton>
 
-            {/* Conteúdo do carrossel */}
+            {/* Carousel content */}
             <RowContent ref={rowRef}>
                 {data?.data.map((movie) => (
                     <RowItem key={movie.message_id}>
@@ -128,7 +128,7 @@ export default function Row({title}: { title: string }) {
                 ))}
             </RowContent>
 
-            {/* Botão para mover para a direita */}
+            {/* Button to scroll right */}
             <ArrowButton direction="right" onClick={() => handleScroll('right')}>
                 <IoIosArrowForward size={20}/>
             </ArrowButton>
