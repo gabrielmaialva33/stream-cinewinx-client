@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: 'https://dev.cinewinx.com.br/',
+    baseURL: 'https://dev.cinewinx.com.br',
 });
