@@ -35,10 +35,29 @@ const RowContent = styled.div`
     scroll-behavior: smooth;
     gap: 10px;
     padding: 10px 0;
+    scroll-snap-type: x mandatory;
+
+    & > div {
+        scroll-snap-align: start;
+    }
 
     &::-webkit-scrollbar {
         display: none;
     }
+`;
+
+const TitleOverlay = styled.div`
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    text-align: center;
+    font-size: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 `;
 
 // Items inside the carousel
@@ -61,8 +80,19 @@ const RowItem = styled.div`
 
     &:hover {
         border: 3px solid #da2ec4; // Pink as the border color
+        transform: scale(1.05);
+        z-index: 1;
+    }
+
+    &:not(:hover) {
+        opacity: 0.6;
+    }
+
+    &:hover ${TitleOverlay} {
+        opacity: 1;
     }
 `;
+
 
 // Navigation buttons
 const ArrowButton = styled.button<{ direction: string }>`
@@ -84,6 +114,7 @@ const ArrowButton = styled.button<{ direction: string }>`
     }
 `;
 
+
 export default function Row({title}: { title: string }) {
     const rowRef = useRef<HTMLDivElement>(null);
 
@@ -92,16 +123,28 @@ export default function Row({title}: { title: string }) {
         queryFn: () => fetchMovies(10, 0),
     });
 
-    const handleScroll = (direction: 'left' | 'right') => {
-        if (rowRef.current) {
-            const scrollDistance = direction === 'left' ? -400 : 400;
-            rowRef.current.scrollBy({left: scrollDistance, behavior: 'smooth'});
-        }
+    const handleScroll = () => {
+        const items = rowRef.current?.children;
+        if (!items) return;
+
+        Array.from(items).forEach((child: Element) => {
+            const item = child as HTMLElement;
+            const rect = item.getBoundingClientRect();
+            const isVisible =
+                rect.left >= 0 &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth);
+
+            if (isVisible) {
+                item.style.opacity = '1';
+                item.style.transform = 'scale(1.1)';
+            } else {
+                item.style.opacity = '0.6';
+                item.style.transform = 'scale(1)';
+            }
+        });
     };
 
-
     if (isLoading) return <p>Loading...</p>;
-
 
     if (error instanceof Error) return <p>Error: {error.message}</p>;
 
@@ -109,13 +152,13 @@ export default function Row({title}: { title: string }) {
         <RowContainer>
             <RowTitle>{title}</RowTitle>
 
-            {/* Button to scroll left */}
-            <ArrowButton direction="left" onClick={() => handleScroll('left')}>
+            {/* Botão para scroll à esquerda */}
+            <ArrowButton direction="left" onClick={() => handleScroll()}>
                 <IoIosArrowBack size={20}/>
             </ArrowButton>
 
-            {/* Carousel content */}
-            <RowContent ref={rowRef}>
+            {/* Conteúdo do carrossel */}
+            <RowContent ref={rowRef} onScroll={handleScroll}>
                 {data?.data.map((movie) => (
                     <RowItem key={movie.message_id}>
                         <Image
@@ -124,12 +167,14 @@ export default function Row({title}: { title: string }) {
                             layout="fill"
                             objectFit="cover"
                         />
+                        {/* Título do filme */}
+                        <TitleOverlay>{movie.parsed_content.title}</TitleOverlay>
                     </RowItem>
                 ))}
             </RowContent>
 
-            {/* Button to scroll right */}
-            <ArrowButton direction="right" onClick={() => handleScroll('right')}>
+            {/* Botão para scroll à direita */}
+            <ArrowButton direction="right" onClick={() => handleScroll()}>
                 <IoIosArrowForward size={20}/>
             </ArrowButton>
         </RowContainer>
