@@ -46,53 +46,40 @@ const RowContent = styled.div`
     }
 `;
 
-const TitleOverlay = styled.div`
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.7);
-    color: #fff;
-    text-align: center;
-    font-size: 1rem;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-`;
+
+// const TitleOverlay = styled.div`
+//     position: absolute;
+//     bottom: 0;
+//     left: 0;
+//     width: 100%;
+//     padding: 10px;
+//     background: rgba(0, 0, 0, 0.7);
+//     color: #fff;
+//     text-align: center;
+//     font-size: 1rem;
+//     opacity: 0;
+//     transition: opacity 0.3s ease-in-out;
+// `;
 
 // Items inside the carousel
 const RowItem = styled.div`
     flex: 0 0 auto;
-    width: 600px;
+    width: 300px;
     height: 300px;
     position: relative;
     cursor: pointer;
     border-radius: 10px;
     overflow: hidden;
+    background: #000;
+    transition: transform 0.3s, height 0.4s ease-in-out; // Transições para escala e altura
 
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    // Subtle hover effect border
 
     &:hover {
-        border: 3px solid #da2ec4; // Pink as the border color
         transform: scale(1.05);
-        z-index: 1;
-    }
-
-    &:not(:hover) {
-        opacity: 0.6;
-    }
-
-    &:hover ${TitleOverlay} {
-        opacity: 1;
+        height: 500px;
+        z-index: 2;
     }
 `;
-
 
 // Navigation buttons
 const ArrowButton = styled.button<{ direction: string }>`
@@ -114,6 +101,63 @@ const ArrowButton = styled.button<{ direction: string }>`
     }
 `;
 
+// Movie information overlay
+const MovieInfo = styled.div`
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    padding: 20px;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+    max-height: 0;
+
+    ${RowItem}:hover & {
+        max-height: 200px;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .details {
+        font-size: 0.9rem;
+        color: #aaa;
+        margin-bottom: 10px;
+    }
+
+    .synopsis {
+        font-size: 0.85rem;
+        color: #ccc;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+    }
+`;
+
+const MovieImage = styled.div`
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease-in-out;
+
+        ${RowItem}:hover & {
+            transform: scale(1.1);
+        }
+    }
+`;
 
 export default function Row({title}: { title: string }) {
     const rowRef = useRef<HTMLDivElement>(null);
@@ -158,17 +202,29 @@ export default function Row({title}: { title: string }) {
             </ArrowButton>
 
             {/* Conteúdo do carrossel */}
-            <RowContent ref={rowRef} onScroll={handleScroll}>
+            <RowContent>
                 {data?.data.map((movie) => (
                     <RowItem key={movie.message_id}>
-                        <Image
-                            src={movie.image_url}
-                            alt={movie.parsed_content.title}
-                            layout="fill"
-                            objectFit="cover"
-                        />
-                        {/* Título do filme */}
-                        <TitleOverlay>{movie.parsed_content.title}</TitleOverlay>
+                        {/* Imagem do filme */}
+                        <MovieImage>
+                            <Image
+                                src={movie.image_url}
+                                alt={movie.parsed_content.title}
+                                layout="fill"
+                                objectFit="cover"
+                            />
+                        </MovieImage>
+
+                        {/* Informações do filme */}
+                        <MovieInfo>
+                            <h3>{movie.parsed_content.title}</h3>
+                            <div className="details">
+                                {movie.parsed_content.release_date} • {movie.parsed_content.country_of_origin || "N/A"}
+                            </div>
+                            <p className="synopsis">
+                                {movie.parsed_content.synopsis || "Descrição não disponível."}
+                            </p>
+                        </MovieInfo>
                     </RowItem>
                 ))}
             </RowContent>
