@@ -17,10 +17,10 @@ export default function Home() {
       <Header />
       <Hero />
       <main>
-        <Row title="Trending Now" fetchUrl="/api/trending" />
-        <Row title="Top Rated" fetchUrl="/api/top-rated" />
+        <Row title="Trending Now" />
+        {/* <Row title="Top Rated" fetchUrl="/api/top-rated" />
         <Row title="Action Movies" fetchUrl="/api/action-movies" />
-        <Row title="Comedies" fetchUrl="/api/comedies" />
+        <Row title="Comedies" fetchUrl="/api/comedies" /> */}
       </main>
     </HomeContainer>
   );

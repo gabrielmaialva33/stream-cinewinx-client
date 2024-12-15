@@ -19,7 +19,7 @@ const Nav = styled.nav`
 export default function Header() {
   return (
     <HeaderContainer>
-      <h1>MyApp</h1>
+      <h1>Cinewinx</h1>
       <Nav>
         <ul>
           <li>Home</li>

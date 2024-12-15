@@ -12,14 +12,14 @@ const HeroContainer = styled.div`
 const HeroButton = styled.button`
   padding: 0.5rem 1rem;
   font-size: 1rem;
-  background: red;
+  background: #24a1de;
   color: white;
   border: none;
   cursor: pointer;
   margin-top: 1rem;
 
   &:hover {
-    background: darkred;
+    background: #1e88c7;
   }
 `;
 
