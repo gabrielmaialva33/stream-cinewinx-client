@@ -25,7 +25,7 @@ const RowTitle = styled.h2`
     font-size: 1.5rem;
     margin-bottom: 10px;
     font-family: 'Montserrat', sans-serif;
-    color: #64cc95; // Light green for emphasis
+    color: #64cc95;
 `;
 
 // Content of the carousel
@@ -47,20 +47,6 @@ const RowContent = styled.div`
 `;
 
 
-// const TitleOverlay = styled.div`
-//     position: absolute;
-//     bottom: 0;
-//     left: 0;
-//     width: 100%;
-//     padding: 10px;
-//     background: rgba(0, 0, 0, 0.7);
-//     color: #fff;
-//     text-align: center;
-//     font-size: 1rem;
-//     opacity: 0;
-//     transition: opacity 0.3s ease-in-out;
-// `;
-
 // Items inside the carousel
 const RowItem = styled.div`
     flex: 0 0 auto;
@@ -71,7 +57,7 @@ const RowItem = styled.div`
     border-radius: 10px;
     overflow: hidden;
     background: #000;
-    transition: transform 0.3s, height 0.4s ease-in-out; // Transições para escala e altura
+    transition: transform 0.3s, height 0.4s ease-in-out;
 
 
     &:hover {
@@ -140,6 +126,7 @@ const MovieInfo = styled.div`
     }
 `;
 
+// Movie image container
 const MovieImage = styled.div`
     position: relative;
     width: 100%;
@@ -196,16 +183,16 @@ export default function Row({title}: { title: string }) {
         <RowContainer>
             <RowTitle>{title}</RowTitle>
 
-            {/* Botão para scroll à esquerda */}
+
             <ArrowButton direction="left" onClick={() => handleScroll()}>
                 <IoIosArrowBack size={20}/>
             </ArrowButton>
 
-            {/* Conteúdo do carrossel */}
+
             <RowContent>
                 {data?.data.map((movie) => (
                     <RowItem key={movie.message_id}>
-                        {/* Imagem do filme */}
+
                         <MovieImage>
                             <Image
                                 src={movie.image_url}
@@ -215,7 +202,6 @@ export default function Row({title}: { title: string }) {
                             />
                         </MovieImage>
 
-                        {/* Informações do filme */}
                         <MovieInfo>
                             <h3>{movie.parsed_content.title}</h3>
                             <div className="details">
@@ -229,7 +215,7 @@ export default function Row({title}: { title: string }) {
                 ))}
             </RowContent>
 
-            {/* Botão para scroll à direita */}
+      
             <ArrowButton direction="right" onClick={() => handleScroll()}>
                 <IoIosArrowForward size={20}/>
             </ArrowButton>

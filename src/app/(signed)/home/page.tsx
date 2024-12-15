@@ -14,7 +14,7 @@ const HomeContainer = styled.div`
     overflow: hidden;
 `;
 
-// Container principal para o conteúdo
+
 const MainContent = styled.main`
     padding: 60px 20px;
 `;
@@ -22,10 +22,9 @@ const MainContent = styled.main`
 export default function Home() {
     return (
         <HomeContainer>
-            {/* Header fixo no topo */}
+
             <Header/>
 
-            {/* Seção principal com herói e carrosséis */}
             <MainContent>
                 <Hero/>
                 <Row title="Trending Now"/>
