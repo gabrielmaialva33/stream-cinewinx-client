@@ -52,11 +52,6 @@ const RowItem = styled.div`
   overflow: hidden;
   background: #000;
   transition: all 0.4s ease-in-out;
-
-  &:hover {
-    transform: scale(1.1);
-    z-index: 2;
-  }
 `;
 
 const ArrowButton = styled.button<{ direction: string }>`
@@ -85,12 +80,15 @@ const MovieInfo = styled.div`
   background: rgba(0, 0, 0, 0.9);
   color: #fff;
   padding: 20px;
-  overflow: hidden;
+  max-height: 150px;
+  overflow-y: auto;
   transition: max-height 0.4s ease-in-out;
   max-height: 0;
+  pointer-events: none;
 
   ${RowItem}:hover & {
     max-height: 150px;
+    pointer-events: auto;
   }
 
   h3 {
@@ -126,8 +124,11 @@ export default function Row({ title }: { title: string }) {
 
   const handleScroll = (direction: 'left' | 'right') => {
     if (rowRef.current) {
-      const scrollAmount = direction === 'left' ? -1000 : 1000;
-      rowRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      const scrollAmount = rowRef.current.clientWidth;
+      rowRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
     }
   };
 
